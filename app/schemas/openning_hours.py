@@ -1,8 +1,7 @@
 from typing import List
+from enum import Enum
 
 from pydantic import BaseModel, Field
-
-from enum import Enum
 
 
 class RestaurantStatus(str, Enum):
