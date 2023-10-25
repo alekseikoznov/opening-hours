@@ -1,20 +1,21 @@
 from typing import List
 
-from pydantic import BaseModel, validator
+from pydantic import BaseModel, Field
+
+from enum import Enum
+
+
+class RestaurantStatus(str, Enum):
+    CLOSE = 'close'
+    OPEN = 'open'
 
 
 class TimeEntry(BaseModel):
-    type: str
-    value: int
+    type: RestaurantStatus = Field(..., title='open or close')
+    value: int = Field(..., title='time')
 
     class Config:
-        title = 'Класс для времени закрытия/открытия'
-
-    @validator('type')
-    def check_correct_type(cls, value: str):
-        if value not in ['close', 'open']:
-            raise ValueError('type должен быть close или open')
-        return value
+        title = 'Class for closing/opening time'
 
 
 class OpeningHours(BaseModel):
@@ -27,4 +28,60 @@ class OpeningHours(BaseModel):
     sunday: List[TimeEntry]
 
     class Config:
-        title = 'Класс для дней недели'
+        title = 'Class for days of the week'
+        schema_extra = {
+           'example': {
+                "monday": [],
+                "tuesday": [
+                 {
+                    "type": "open",
+                    "value": 36000
+                 },
+                 {
+                  "type": "close",
+                  "value": 64800
+                 }
+                ],
+                "wednesday": [],
+                "thursday": [
+                 {
+                  "type": "open",
+                  "value": 37800
+                 },
+                 {
+                  "type": "close",
+                  "value": 64800
+                 }
+                ],
+                "friday": [
+                 {
+                  "type": "open",
+                  "value": 36000
+                 }
+                ],
+                "saturday": [
+                 {
+                  "type": "close",
+                  "value": 3600
+                 },
+                 {
+                  "type": "open",
+                  "value": 36000
+                 }
+                ],
+                "sunday": [
+                 {
+                  "type": "close",
+                  "value": 3600
+                 },
+                 {
+                  "type": "open",
+                  "value": 43200
+                 },
+                 {
+                  "type": "close",
+                  "value": 75600
+                 }
+                ]
+              }
+        }
