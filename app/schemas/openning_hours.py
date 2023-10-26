@@ -11,7 +11,7 @@ class RestaurantStatus(str, Enum):
 
 class TimeEntry(BaseModel):
     type: RestaurantStatus = Field(..., title='open or close')
-    value: int = Field(..., title='time')
+    value: int = Field(..., title='time', ge=0, le=86399)
 
     class Config:
         title = 'Class for closing/opening time'
